@@ -6,11 +6,11 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 // --- Types ---
-interface SearchResult {
-  title: string;
-  author: string;
-  text: string;
-}
+// interface SearchResult {
+//   title: string;
+//   author: string;
+//   text: string;
+// }
 
 // --- Example Integration ---
 export const HomePage: React.FC = () => {

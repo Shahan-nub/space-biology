@@ -2,11 +2,11 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 // --- Types ---
-interface SearchResult {
-  title: string;
-  author: string;
-  text: string;
-}
+// interface SearchResult {
+//   title: string;
+//   author: string;
+//   text: string;
+// }
 
 // --- Hero Section ---
 export const HeroSection: React.FC = () => {

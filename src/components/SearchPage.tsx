@@ -2,7 +2,7 @@
 
 import React, { useState, FormEvent, JSX } from "react";
 import { motion } from "framer-motion";
-import { Search, Filter, X, ChevronRight, Menu } from "lucide-react";
+import Link from "next/link";
 
 interface Publication {
   title?: string;
@@ -119,12 +119,12 @@ export default function SearchPage(): JSX.Element {
             relationships is displayed on the home page. Click the button below
             to explore the entire network.
           </p>
-          <a
+          <Link
             href="/"
             className="inline-block px-6 py-3 bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
           >
             🔍 Explore Full Knowledge Graph
-          </a>
+          </Link>
         </motion.div>
 
         {/* Search functionality placeholder */}
@@ -139,7 +139,7 @@ export default function SearchPage(): JSX.Element {
           </h3>
           <p className="text-sm text-slate-400 max-w-2xl mx-auto">
             Advanced search features for querying the knowledge graph will be
-            available soon. You'll be able to search for specific entities,
+            available soon. You&apos;ll be able to search for specific entities,
             relationships, and explore connected concepts across the entire
             space biology research database.
           </p>

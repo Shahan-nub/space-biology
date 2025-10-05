@@ -46,16 +46,16 @@ export default function CypherQueryEngine() {
       const whereRegex = /WHERE\s+(.+)/i;
 
       if (!matchRegex.test(query)) {
-        throw new Error("Invalid syntax. Use: MATCH (s)-[p]->(o) WHERE s = \"covid-19\"");
+        throw new Error(
+          'Invalid syntax. Use: MATCH (s)-[p]->(o) WHERE s = "covid-19"'
+        );
       }
 
       const whereMatch = query.match(whereRegex);
       let filtered = triples;
 
       if (whereMatch) {
-        const condition = whereMatch[1]
-          .replace(/["']/g, "")
-          .trim();
+        const condition = whereMatch[1].replace(/["']/g, "").trim();
 
         // Support simple filters like:
         // s = "..." | p = "..." | o = "..."
@@ -63,27 +63,37 @@ export default function CypherQueryEngine() {
         if (condParts.length === 2) {
           const [lhs, rhs] = condParts;
           if (lhs === "s" || lhs === "subject") {
-            filtered = triples.filter((t) => t.subject.toLowerCase() === rhs.toLowerCase());
+            filtered = triples.filter(
+              (t) => t.subject.toLowerCase() === rhs.toLowerCase()
+            );
           } else if (lhs === "p" || lhs === "predicate") {
-            filtered = triples.filter((t) => t.predicate.toLowerCase() === rhs.toLowerCase());
+            filtered = triples.filter(
+              (t) => t.predicate.toLowerCase() === rhs.toLowerCase()
+            );
           } else if (lhs === "o" || lhs === "object") {
-            filtered = triples.filter((t) => t.object.toLowerCase() === rhs.toLowerCase());
+            filtered = triples.filter(
+              (t) => t.object.toLowerCase() === rhs.toLowerCase()
+            );
           } else {
             throw new Error("Unknown filter field. Use s, p, or o.");
           }
         } else {
-          throw new Error("Invalid WHERE clause. Use e.g. WHERE s = \"covid-19\"");
+          throw new Error(
+            'Invalid WHERE clause. Use e.g. WHERE s = "covid-19"'
+          );
         }
       }
 
       setResults(filtered.slice(0, 100)); // limit to 100 for readability
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
     }
   };
 
   if (loading) {
-    return <div className="text-gray-400 text-center py-10">Loading dataset...</div>;
+    return (
+      <div className="text-gray-400 text-center py-10">Loading dataset...</div>
+    );
   }
 
   return (
@@ -132,7 +142,8 @@ export default function CypherQueryEngine() {
                   <span className="text-indigo-400">Subject:</span> {t.subject}
                 </p>
                 <p>
-                  <span className="text-pink-400">Predicate:</span> {t.predicate}
+                  <span className="text-pink-400">Predicate:</span>{" "}
+                  {t.predicate}
                 </p>
                 <p>
                   <span className="text-green-400">Object:</span> {t.object}

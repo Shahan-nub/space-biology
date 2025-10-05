@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { ForceGraph2D } from "react-force-graph";
 import kgTriples from "@/data/kg_triples_validated.json";
+
+import Link from "next/link";
 
 interface Triple {
   title: string;
@@ -19,6 +21,7 @@ interface GraphNode {
   name: string;
   type: "subject" | "object";
   val: number;
+  [key: string]: unknown; // Allow additional properties from the library
 }
 
 interface GraphLink {
@@ -26,6 +29,7 @@ interface GraphLink {
   target: string;
   label: string;
   title: string;
+  [key: string]: unknown; // Allow additional properties from the library
 }
 
 interface GraphData {
@@ -46,7 +50,6 @@ export const ForceGraphKG: React.FC = () => {
   });
   const [loading, setLoading] = useState(true);
   const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null);
-  const forceRef = useRef<any>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -125,12 +128,12 @@ export const ForceGraphKG: React.FC = () => {
     setLoading(false);
   }, []);
 
-  const handleNodeClick = useCallback((node: any) => {
+  const handleNodeClick = useCallback((node: GraphNode) => {
     setSelectedNode(node);
     console.log("Node clicked:", node);
   }, []);
 
-  const handleLinkClick = useCallback((link: any) => {
+  const handleLinkClick = useCallback((link: GraphLink) => {
     console.log("Link clicked:", link);
   }, []);
 
@@ -291,14 +294,13 @@ export const ForceGraphKG: React.FC = () => {
           >
             {!loading && (
               <ForceGraph2D
-                ref={forceRef}
                 graphData={graphData}
                 nodeLabel="name"
-                nodeColor={(node: any) =>
+                nodeColor={(node: GraphNode) =>
                   node.type === "subject" ? "#8b5cf6" : "#06b6d4"
                 }
                 nodeRelSize={6}
-                nodeVal={(node: any) => node.val}
+                nodeVal={(node: GraphNode) => node.val}
                 linkColor={() => "#475569"}
                 linkWidth={1}
                 linkDirectionalArrowLength={3}

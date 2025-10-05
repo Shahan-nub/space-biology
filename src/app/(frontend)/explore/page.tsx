@@ -1,6 +1,5 @@
 import KnowledgeGraph from "@/components/Graph";
 
-type Props = {};
 export default function page() {
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center py-12 px-4">

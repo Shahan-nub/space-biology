@@ -37,7 +37,19 @@ export const KnowledgeGraph: React.FC = () => {
       string,
       { id: string; label: string; type: string }
     >();
-    const elements: any[] = [];
+    const elements: Array<{
+      data: {
+        id: string;
+        label?: string;
+        source?: string;
+        target?: string;
+        predicate?: string;
+        type?: string;
+        title?: string;
+        [key: string]: unknown;
+      };
+      classes?: string;
+    }> = [];
     let nodeIdCounter = 0;
     let edgeIdCounter = 0;
 

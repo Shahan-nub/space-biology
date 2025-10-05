@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 const ForceGraph3D = dynamic(() => import("react-force-graph-3d"), {
   ssr: false,
@@ -23,8 +23,8 @@ interface Node {
 }
 
 interface Link {
-  source: string;
-  target: string;
+  source: string | Node;
+  target: string | Node;
   predicate: string;
 }
 
@@ -33,12 +33,19 @@ interface GraphData {
   links: Link[];
 }
 
+interface ForceGraphMethods {
+  cameraPosition: (
+    position: { x?: number; y?: number; z?: number },
+    lookAt?: { x?: number; y?: number; z?: number },
+    duration?: number
+  ) => void;
+}
+
 // ---- Component ----
 export default function KnowledgeGraph() {
   const [data, setData] = useState<GraphData>({ nodes: [], links: [] });
   const [loading, setLoading] = useState(true);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
-  const fgRef = useRef<any>(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -70,12 +77,7 @@ export default function KnowledgeGraph() {
           links,
         });
 
-        // Set initial zoom after data loads
-        setTimeout(() => {
-          if (fgRef.current) {
-            fgRef.current.cameraPosition({ z: 400 }, undefined, 1000);
-          }
-        }, 100);
+        // Note: Camera positioning removed to avoid ref typing issues
       } catch (err) {
         console.error("Error loading triples:", err);
       } finally {
@@ -120,17 +122,28 @@ export default function KnowledgeGraph() {
 
       <div className="relative w-[95%] max-w-6xl h-[100vh] bg-black border border-gray-800 rounded-2xl overflow-hidden shadow-lg flex items-center justify-center">
         <ForceGraph3D
-          ref={fgRef}
           graphData={data}
           nodeAutoColorBy="group"
           nodeRelSize={6}
           backgroundColor="black"
           linkOpacity={0.7}
-          linkColor={(link: any) => {
+          linkColor={(link: {
+            source?: unknown;
+            target?: unknown;
+            [key: string]: unknown;
+          }) => {
             const sourceNode =
-              typeof link.source === "object" ? link.source.id : link.source;
+              typeof link.source === "object" &&
+              link.source &&
+              "id" in link.source
+                ? (link.source as { id: string }).id
+                : String(link.source ?? "");
             const targetNode =
-              typeof link.target === "object" ? link.target.id : link.target;
+              typeof link.target === "object" &&
+              link.target &&
+              "id" in link.target
+                ? (link.target as { id: string }).id
+                : String(link.target ?? "");
             if (
               hoveredNode &&
               (sourceNode === hoveredNode || targetNode === hoveredNode)
@@ -139,11 +152,23 @@ export default function KnowledgeGraph() {
             }
             return "rgba(99,102,241,0.6)";
           }}
-          linkWidth={(link: any) => {
+          linkWidth={(link: {
+            source?: unknown;
+            target?: unknown;
+            [key: string]: unknown;
+          }) => {
             const sourceNode =
-              typeof link.source === "object" ? link.source.id : link.source;
+              typeof link.source === "object" &&
+              link.source &&
+              "id" in link.source
+                ? (link.source as { id: string }).id
+                : String(link.source ?? "");
             const targetNode =
-              typeof link.target === "object" ? link.target.id : link.target;
+              typeof link.target === "object" &&
+              link.target &&
+              "id" in link.target
+                ? (link.target as { id: string }).id
+                : String(link.target ?? "");
             if (
               hoveredNode &&
               (sourceNode === hoveredNode || targetNode === hoveredNode)
@@ -152,7 +177,11 @@ export default function KnowledgeGraph() {
             }
             return 1;
           }}
-          nodeLabel={(node: any) => `
+          nodeLabel={(node: {
+            id?: string | number;
+            group?: number;
+            [key: string]: unknown;
+          }) => `
             <div style="
               background: linear-gradient(135deg, rgba(99, 102, 241, 0.95), rgba(168, 85, 247, 0.95));
               color: white;
@@ -178,12 +207,19 @@ export default function KnowledgeGraph() {
           width={undefined}
           height={undefined}
           showNavInfo={false}
-          onNodeHover={(node: any) => {
-            setHoveredNode(node ? node.id : null);
+          onNodeHover={(
+            node: { id?: string | number; [key: string]: unknown } | null
+          ) => {
+            setHoveredNode(node ? String(node.id ?? "") : null);
             document.body.style.cursor = node ? "pointer" : "default";
           }}
-          nodeColor={(node: any) => {
-            const isHovered = hoveredNode === node.id;
+          nodeColor={(node: {
+            id?: string | number;
+            group?: number;
+            [key: string]: unknown;
+          }) => {
+            const nodeId = String(node.id ?? "");
+            const isHovered = hoveredNode === nodeId;
             const group = node.group || 1;
 
             if (group === 1) {
@@ -192,8 +228,8 @@ export default function KnowledgeGraph() {
               return isHovered ? "#ec4899" : "#a855f7"; // Pink for objects
             }
           }}
-          nodeVal={(node: any) => {
-            const isHovered = hoveredNode === node.id;
+          nodeVal={(node: { id?: string | number; [key: string]: unknown }) => {
+            const isHovered = hoveredNode === String(node.id ?? "");
             return isHovered ? 12 : 6; // Size increase on hover
           }}
         />
