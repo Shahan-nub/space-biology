@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { Search } from 'lucide-react';
-import { useState } from 'react';
+import { motion } from "framer-motion";
+import { Search } from "lucide-react";
+import { useState } from "react";
 
 // --- Types ---
 interface SearchResult {
@@ -27,7 +27,8 @@ export const HeroSection: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
       >
-        Unlock insights from 600+ NASA space biology publications. Search and explore how life adapts beyond Earth.
+        Unlock insights from 600+ NASA space biology publications. Search and
+        explore how life adapts beyond Earth.
       </motion.p>
       <motion.a
         href="/graph"
@@ -40,7 +41,3 @@ export const HeroSection: React.FC = () => {
     </section>
   );
 };
-
-
-
-
