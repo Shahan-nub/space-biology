@@ -1,9 +1,11 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-const ForceGraph3D = dynamic(() => import("react-force-graph-3d"), { ssr: false });
+const ForceGraph3D = dynamic(() => import("react-force-graph-3d"), {
+  ssr: false,
+});
 
 // ---- Interfaces ----
 interface Triple {
@@ -35,6 +37,8 @@ interface GraphData {
 export default function KnowledgeGraph() {
   const [data, setData] = useState<GraphData>({ nodes: [], links: [] });
   const [loading, setLoading] = useState(true);
+  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const fgRef = useRef<any>(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -65,6 +69,13 @@ export default function KnowledgeGraph() {
           nodes: Array.from(nodesMap.values()),
           links,
         });
+
+        // Set initial zoom after data loads
+        setTimeout(() => {
+          if (fgRef.current) {
+            fgRef.current.cameraPosition({ z: 400 }, undefined, 1000);
+          }
+        }, 100);
       } catch (err) {
         console.error("Error loading triples:", err);
       } finally {
@@ -83,18 +94,108 @@ export default function KnowledgeGraph() {
     );
 
   return (
-    <div className="flex mt-[10%] justify-center items-center w-full mb-16">
-      <div className="relative w-[95%] max-w-6xl h-[100vh] bg-black border border-gray-800 rounded-2xl overflow-hidden shadow-lg">
+    <div className="flex mt-6 justify-center items-center w-full mb-16 flex-col">
+      {/* Instructions Tooltip */}
+      <div className="w-[95%] max-w-6xl mb-4 bg-gradient-to-r from-indigo-950/60 to-purple-950/60 backdrop-blur-sm border border-indigo-500/30 rounded-xl p-5 shadow-2xl">
+        <div className="flex items-center justify-center mb-3">
+          <span className="text-indigo-300 font-bold text-sm tracking-wider">
+            🎮 GRAPH CONTROLS
+          </span>
+        </div>
+        <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex items-center gap-2 bg-black/40 border border-indigo-500/30 rounded-lg px-4 py-2 hover:border-indigo-400/50 transition-colors">
+            <span className="text-indigo-400 font-bold text-xs">🖱️ LEFT</span>
+            <span className="text-gray-400 text-xs font-bold">Rotate</span>
+          </div>
+          <div className="flex items-center gap-2 bg-black/40 border border-purple-500/30 rounded-lg px-4 py-2 hover:border-purple-400/50 transition-colors">
+            <span className="text-purple-400 font-bold text-xs">🖲️ WHEEL</span>
+            <span className="text-gray-400 text-xs font-bold">Zoom</span>
+          </div>
+          <div className="flex items-center gap-2 bg-black/40 border border-pink-500/30 rounded-lg px-4 py-2 hover:border-pink-400/50 transition-colors">
+            <span className="text-pink-400 font-bold text-xs">🖱️ RIGHT</span>
+            <span className="text-gray-400 text-xs font-bold">Pan</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative w-[95%] max-w-6xl h-[100vh] bg-black border border-gray-800 rounded-2xl overflow-hidden shadow-lg flex items-center justify-center">
         <ForceGraph3D
+          ref={fgRef}
           graphData={data}
           nodeAutoColorBy="group"
           nodeRelSize={6}
           backgroundColor="black"
           linkOpacity={0.7}
-          linkColor={() => "rgba(99,102,241,0.6)"}
-          nodeLabel="id"
+          linkColor={(link: any) => {
+            const sourceNode =
+              typeof link.source === "object" ? link.source.id : link.source;
+            const targetNode =
+              typeof link.target === "object" ? link.target.id : link.target;
+            if (
+              hoveredNode &&
+              (sourceNode === hoveredNode || targetNode === hoveredNode)
+            ) {
+              return "rgba(236, 72, 153, 0.9)"; // Pink highlight
+            }
+            return "rgba(99,102,241,0.6)";
+          }}
+          linkWidth={(link: any) => {
+            const sourceNode =
+              typeof link.source === "object" ? link.source.id : link.source;
+            const targetNode =
+              typeof link.target === "object" ? link.target.id : link.target;
+            if (
+              hoveredNode &&
+              (sourceNode === hoveredNode || targetNode === hoveredNode)
+            ) {
+              return 3;
+            }
+            return 1;
+          }}
+          nodeLabel={(node: any) => `
+            <div style="
+              background: linear-gradient(135deg, rgba(99, 102, 241, 0.95), rgba(168, 85, 247, 0.95));
+              color: white;
+              padding: 12px 16px;
+              border-radius: 12px;
+              font-family: system-ui, -apple-system, sans-serif;
+              font-size: 14px;
+              font-weight: 600;
+              border: 2px solid rgba(255, 255, 255, 0.3);
+              box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+              backdrop-filter: blur(10px);
+              max-width: 250px;
+              word-wrap: break-word;
+            ">
+              <div style="margin-bottom: 4px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9;">
+                ${node.group === 1 ? "📍 Subject" : "🎯 Object"}
+              </div>
+              ${node.id}
+            </div>
+          `}
           linkLabel="predicate"
           enableNodeDrag={true}
+          width={undefined}
+          height={undefined}
+          showNavInfo={false}
+          onNodeHover={(node: any) => {
+            setHoveredNode(node ? node.id : null);
+            document.body.style.cursor = node ? "pointer" : "default";
+          }}
+          nodeColor={(node: any) => {
+            const isHovered = hoveredNode === node.id;
+            const group = node.group || 1;
+
+            if (group === 1) {
+              return isHovered ? "#8b5cf6" : "#6366f1"; // Purple for subjects
+            } else {
+              return isHovered ? "#ec4899" : "#a855f7"; // Pink for objects
+            }
+          }}
+          nodeVal={(node: any) => {
+            const isHovered = hoveredNode === node.id;
+            return isHovered ? 12 : 6; // Size increase on hover
+          }}
         />
       </div>
     </div>

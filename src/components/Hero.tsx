@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
-import { Search } from "lucide-react";
-import { useState } from "react";
+import Link from "next/link";
 
 // --- Types ---
 interface SearchResult {
@@ -30,14 +29,15 @@ export const HeroSection: React.FC = () => {
         Unlock insights from 600+ NASA space biology publications. Search and
         explore how life adapts beyond Earth.
       </motion.p>
-      <motion.a
-        href="/graph"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-semibold shadow-lg"
-      >
-        Start Exploring
-      </motion.a>
+      <Link href="/explore">
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-semibold shadow-lg inline-block"
+        >
+          Start Exploring
+        </motion.div>
+      </Link>
     </section>
   );
 };

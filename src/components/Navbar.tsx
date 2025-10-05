@@ -6,18 +6,20 @@ import Link from "next/link";
 export const Navbar: React.FC = () => {
   return (
     <nav className="fixed top-0 w-full z-50 bg-black/70 backdrop-blur-md border-b border-gray-800 py-4 px-8 flex justify-between items-center">
-      <motion.h1
-        className="text-2xl max-sm:text-base text-center font-bold text-indigo-400 tracking-tight"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        SpaceBio Explorer
-      </motion.h1>
+      <Link href="/" passHref>
+        <motion.h1
+          className="cursor-pointer text-2xl max-sm:text-base text-center font-bold text-indigo-400 tracking-tight"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          SpaceBio Explorer
+        </motion.h1>
+      </Link>
 
       <ul className="flex gap-8 text-gray-300 text-sm md:text-base">
         <li>
-          <Link href="/" className="hover:text-indigo-400 transition">
-            About
+          <Link href="/explore" className="hover:text-indigo-400 transition">
+            Explore
           </Link>
         </li>
         <li>
@@ -25,11 +27,11 @@ export const Navbar: React.FC = () => {
             Search
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link href="#footer" className="hover:text-indigo-400 transition">
             Contact
           </Link>
-        </li>
+        </li> */}
       </ul>
     </nav>
   );

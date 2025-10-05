@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { AboutSection } from "./About";
 import { HeroSection } from "./Hero";
 import { motion } from "framer-motion";
-import { Search } from "lucide-react";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 
 // --- Types ---
 interface SearchResult {
@@ -16,10 +14,6 @@ interface SearchResult {
 
 // --- Example Integration ---
 export const HomePage: React.FC = () => {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [loading, setLoading] = useState(false);
-
   //   const handleSearch = async () => {
   //     setLoading(true);
   //     const res = await fetch('/api/search', {
@@ -77,8 +71,8 @@ export const HomePage: React.FC = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="/knowledge-graph"
+              <Link
+                href="/explore"
                 className="px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity shadow-lg hover:shadow-xl flex items-center gap-2"
               >
                 <svg
@@ -95,14 +89,14 @@ export const HomePage: React.FC = () => {
                   />
                 </svg>
                 Launch Knowledge Graph
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="/search"
                 className="px-8 py-4 bg-slate-800/40 border border-slate-700 text-slate-200 font-semibold rounded-lg hover:bg-slate-800/60 transition-colors"
               >
-                View Sample Query
-              </a>
+                Query Knowledge Graph
+              </Link>
             </div>
 
             <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
