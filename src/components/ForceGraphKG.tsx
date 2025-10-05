@@ -4,7 +4,6 @@ import React, { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { ForceGraph2D } from "react-force-graph";
 import kgTriples from "@/data/kg_triples_validated.json";
-
 import Link from "next/link";
 
 interface Triple {
@@ -159,12 +158,12 @@ export const ForceGraphKG: React.FC = () => {
               </p>
             </div>
           </div>
-          <a
+          <Link
             href="/"
             className="px-4 py-2 rounded-lg bg-slate-800/40 border border-slate-700 text-sm hover:bg-slate-800/60 transition-colors"
           >
             ← Back to Home
-          </a>
+          </Link>
         </div>
       </header>
 

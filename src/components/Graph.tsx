@@ -33,13 +33,13 @@ interface GraphData {
   links: Link[];
 }
 
-interface ForceGraphMethods {
-  cameraPosition: (
-    position: { x?: number; y?: number; z?: number },
-    lookAt?: { x?: number; y?: number; z?: number },
-    duration?: number
-  ) => void;
-}
+// interface ForceGraphMethods {
+//   cameraPosition: (
+//     position: { x?: number; y?: number; z?: number },
+//     lookAt?: { x?: number; y?: number; z?: number },
+//     duration?: number
+//   ) => void;
+// }
 
 // ---- Component ----
 export default function KnowledgeGraph() {
