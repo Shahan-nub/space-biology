@@ -14,7 +14,7 @@
 
 **Unlock insights from 600+ NASA space biology publications through interactive 3D knowledge graphs and intelligent search.**
 
-[🌐 Live Demo](#) • [📊 Features](#features) • [🎯 Tech Stack](#tech-stack) • [👥 Team](#team)
+[🌐 Live Demo](https://space-bio-explorer.vercel.app/)
 
 </div>
 
@@ -22,7 +22,7 @@
 
 ## 🌟 Overview
 
-**Space Biology Explorer** is a cutting-edge web application built for the **NASA Space Apps Challenge 2025** that transforms decades of space biology research into an interactive, explorable knowledge graph. By leveraging machine learning and advanced visualization techniques, we make complex biological research accessible to scientists, students, and space enthusiasts worldwide.
+**SpaceBio Explorer** is a cutting-edge web application built for the **NASA Space Apps Challenge 2025** that transforms decades of space biology research into an interactive, explorable knowledge graph. By leveraging machine learning and advanced visualization techniques, we make complex biological research accessible to scientists, students, and space enthusiasts worldwide.
 
 ### 🎯 Mission
 
@@ -74,8 +74,8 @@ To bridge data and discovery by making space biology research easily searchable,
 
 <div align="center">
 
-| Category               | Technologies                                  |
-| ---------------------- | --------------------------------------------- |
+| Category                     | Technologies                                  |
+| ---------------------------- | --------------------------------------------- |
 | **Frontend Framework** | Next.js 15, React 18, TypeScript              |
 | **Styling**            | Tailwind CSS, Custom CSS Animations           |
 | **3D Graphics**        | react-force-graph-3d, Three.js                |
@@ -127,13 +127,13 @@ Accent:    Cyan (#06b6d4)   - Special CTAs
 
 <div align="center">
 
-| Metric                          | Count   |
-| ------------------------------- | ------- |
-| 📚 **Research Papers Analyzed** | 600+    |
-| 🔗 **Total Relationships**      | 74,250+ |
-| 🎯 **Visualized Nodes**         | 2,000+  |
-| 🧬 **Unique Entities**          | 10,000+ |
-| ⚡ **Query Response Time**      | < 100ms |
+| Metric                               | Count   |
+| ------------------------------------ | ------- |
+| 📚**Research Papers Analyzed** | 600+    |
+| 🔗**Total Relationships**      | 74,250+ |
+| 🎯**Visualized Nodes**         | 2,000+  |
+| 🧬**Unique Entities**          | 10,000+ |
+| ⚡**Query Response Time**      | < 100ms |
 
 </div>
 
@@ -141,8 +141,8 @@ Accent:    Cyan (#06b6d4)   - Special CTAs
 
 ## 🌐 Pages & Routes
 
-| Route      | Description                                         |
-| ---------- | --------------------------------------------------- |
+| Route        | Description                                         |
+| ------------ | --------------------------------------------------- |
 | `/`        | Landing page with hero section and project overview |
 | `/explore` | 3D Interactive knowledge graph visualization        |
 | `/search`  | Cypher query interface with filtered results        |
@@ -190,9 +190,7 @@ This project was built for the **NASA Space Apps Challenge 2025** by **Team Tech
 
 **Built with ❤️ by Team Techlicious**
 
-_Passionate developers and space enthusiasts working to democratize access to space biology knowledge_
-
-</div>
+_Passionate developers and space enthusiasts working to democratize access to space biology knowledge_ 
 
 ---
 
@@ -202,16 +200,6 @@ This project is licensed under the **MIT License** - see the LICENSE file for de
 
 ---
 
-## 🙏 Acknowledgments
-
-- 🚀 **NASA** - For providing incredible space biology research data
-- 🌍 **Space Apps Challenge** - For creating this amazing opportunity
-- 🎨 **Open Source Community** - For the amazing tools and libraries
-- 🧬 **Space Biology Researchers** - For their groundbreaking work
-
----
-
-<div align="center">
 
 ### 🌟 Star this repo if you find it helpful!
 
@@ -225,5 +213,5 @@ This project is licensed under the **MIT License** - see the LICENSE file for de
 ---
 
 <div align="center">
-  <sub>Built during NASA Space Apps Challenge 2025 🚀</sub>
+  <sub>Built for NASA Space Apps Challenge 2025 🚀</sub>
 </div>

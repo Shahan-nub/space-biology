@@ -4,7 +4,7 @@ import { useMemo } from "react";
 
 // --- Hero Section ---
 export const HeroSection: React.FC = () => {
-  // Generate particle positions once to avoid hydration errors
+  // Always generate 30 particles for consistent SSR
   const particles = useMemo(() => {
     return [...Array(30)].map((_, i) => ({
       id: i,
@@ -23,6 +23,8 @@ export const HeroSection: React.FC = () => {
       top: Math.random() * 100,
       xOffset: Math.random() * 50 - 25,
       duration: Math.random() * 8 + 5,
+      // Mark particles above index 7 as mobile-hidden
+      mobileHidden: i >= 8,
     }));
   }, []);
 
@@ -40,9 +42,10 @@ export const HeroSection: React.FC = () => {
         />
       </div>
 
-      {/* Gradient Orbs */}
+      {/* Gradient Orbs - Always render, use CSS for mobile optimization */}
+      {/* Desktop: animated orbs */}
       <motion.div
-        className="absolute top-20 left-10 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl"
+        className="absolute top-20 left-10 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl md:block hidden"
         animate={{
           scale: [1, 1.2, 1],
           opacity: [0.3, 0.5, 0.3],
@@ -54,7 +57,7 @@ export const HeroSection: React.FC = () => {
         }}
       />
       <motion.div
-        className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-600/30 rounded-full blur-3xl"
+        className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-600/30 rounded-full blur-3xl md:block hidden"
         animate={{
           scale: [1.2, 1, 1.2],
           opacity: [0.5, 0.3, 0.5],
@@ -66,7 +69,7 @@ export const HeroSection: React.FC = () => {
         }}
       />
       <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-600/20 rounded-full blur-3xl"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-600/20 rounded-full blur-3xl md:block hidden"
         animate={{
           scale: [1, 1.3, 1],
           rotate: [0, 180, 360],
@@ -78,11 +81,17 @@ export const HeroSection: React.FC = () => {
         }}
       />
 
-      {/* Floating Particles - Enhanced */}
+      {/* Mobile: static gradient orbs for better performance */}
+      <div className="absolute top-20 left-10 w-64 h-64 bg-purple-600/20 rounded-full blur-3xl md:hidden" />
+      <div className="absolute bottom-20 right-10 w-64 h-64 bg-cyan-600/20 rounded-full blur-3xl md:hidden" />
+
+      {/* Floating Particles - Enhanced & Optimized */}
       {particles.map((particle) => (
         <motion.div
           key={particle.id}
-          className="absolute rounded-full"
+          className={`absolute rounded-full ${
+            particle.mobileHidden ? "md:block hidden" : ""
+          }`}
           style={{
             width: particle.size + "px",
             height: particle.size + "px",
@@ -90,6 +99,7 @@ export const HeroSection: React.FC = () => {
             boxShadow: particle.shadow,
             left: `${particle.left}%`,
             top: `${particle.top}%`,
+            willChange: "transform, opacity",
           }}
           animate={{
             y: [0, -100, 0],
@@ -215,7 +225,10 @@ export const HeroSection: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
+          transition={{
+            duration: 0.8,
+            delay: 0.7,
+          }}
           className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto"
         >
           <div className="p-6 bg-gradient-to-br from-purple-900/20 to-purple-900/5 border border-purple-500/20 rounded-2xl backdrop-blur-sm">
@@ -250,8 +263,13 @@ export const HeroSection: React.FC = () => {
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
           className="flex flex-col items-center gap-2 text-gray-500"
+          style={{ willChange: "transform" }}
         >
           <span className="text-xs uppercase tracking-wider">Scroll</span>
           <svg
