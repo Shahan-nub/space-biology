@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -44,6 +44,19 @@ interface NodeInfo {
   relatedPredicates: string[];
 }
 
+interface GraphNode {
+  id?: string | number;
+  group?: number;
+  connections?: number;
+  [key: string]: unknown;
+}
+
+interface Node extends GraphNode {
+  id: string;
+  group?: number;
+  connections?: number;
+}
+
 export default function QueryGraphExplorer() {
   const [triples, setTriples] = useState<Triple[]>([]);
   const [query, setQuery] = useState("");
@@ -58,7 +71,6 @@ export default function QueryGraphExplorer() {
   const [selectedNode, setSelectedNode] = useState<NodeInfo | null>(null);
   const [highlightNodes, setHighlightNodes] = useState(new Set<string>());
   const [highlightLinks, setHighlightLinks] = useState(new Set<Link>());
-  const graphRef = useRef<any>(null);
 
   // Load dataset
   useEffect(() => {
@@ -75,7 +87,7 @@ export default function QueryGraphExplorer() {
   }, []);
 
   // Handle node click
-  const handleNodeClick = (node: any) => {
+  const handleNodeClick = (node: GraphNode) => {
     const nodeId = String(node.id ?? "");
 
     // Find all connections
@@ -584,7 +596,6 @@ export default function QueryGraphExplorer() {
           <div className="flex gap-4">
             <div className="flex-1 h-[600px] bg-black border border-gray-800 rounded-xl overflow-hidden flex items-center justify-center">
               <ForceGraph3D
-                ref={graphRef}
                 graphData={graphData}
                 nodeAutoColorBy="group"
                 nodeRelSize={6}

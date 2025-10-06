@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ForceGraph3D = dynamic(() => import("react-force-graph-3d"), {
@@ -43,7 +43,18 @@ interface NodeInfo {
   relatedPredicates: string[];
 }
 
-// ---- Component ----
+interface GraphNode {
+  id?: string | number;
+  group?: number;
+  connections?: number;
+  [key: string]: unknown;
+}
+
+interface Node extends GraphNode {
+  id: string;
+  group?: number;
+  connections?: number;
+}
 export default function KnowledgeGraph() {
   const [data, setData] = useState<GraphData>({ nodes: [], links: [] });
   const [allTriples, setAllTriples] = useState<Triple[]>([]);
@@ -53,7 +64,6 @@ export default function KnowledgeGraph() {
   const [searchTerm, setSearchTerm] = useState("");
   const [highlightNodes, setHighlightNodes] = useState(new Set<string>());
   const [highlightLinks, setHighlightLinks] = useState(new Set<Link>());
-  const graphRef = useRef<any>(null);
 
   // Statistics
   const [stats, setStats] = useState({
@@ -139,7 +149,7 @@ export default function KnowledgeGraph() {
   }, []);
 
   // Handle node click
-  const handleNodeClick = (node: any) => {
+  const handleNodeClick = (node: GraphNode) => {
     const nodeId = String(node.id ?? "");
 
     // Find all connections
@@ -216,12 +226,6 @@ export default function KnowledgeGraph() {
 
       setHighlightNodes(nodeIds);
       setHighlightLinks(new Set(relatedLinks));
-
-      // Focus on first matching node
-      if (graphRef.current && matchingNodes[0]) {
-        const node = matchingNodes[0];
-        graphRef.current.cameraPosition({ x: 0, y: 0, z: 300 }, node, 1000);
-      }
     }
   };
 
@@ -356,7 +360,6 @@ export default function KnowledgeGraph() {
         {/* Graph */}
         <div className="relative flex-1 h-[100vh] bg-black border border-gray-800 rounded-2xl overflow-hidden shadow-lg flex items-center justify-center">
           <ForceGraph3D
-            ref={graphRef}
             graphData={data}
             nodeAutoColorBy="group"
             nodeRelSize={6}
