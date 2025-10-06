@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export const MusicPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.6); // Set to 60%
+  const [volume, setVolume] = useState(0.2); // Set to 60%
   const [showVolume, setShowVolume] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);

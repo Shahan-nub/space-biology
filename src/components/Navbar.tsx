@@ -6,7 +6,7 @@ import { MusicPlayer } from "./MusicPlayer";
 
 export const Navbar: React.FC = () => {
   return (
-    <nav className="fixed top-0 w-full z-50 bg-black/70 backdrop-blur-md border-b border-gray-800 py-4 px-8">
+    <nav className="fixed top-0 w-full z-50 bg-black/50 backdrop-blur-sm border-b border-gray-800 py-4 px-8">
       <div className="flex justify-between items-center max-w-7xl mx-auto">
         {/* Left: Logo */}
         <Link href="/" passHref>

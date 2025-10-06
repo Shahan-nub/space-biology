@@ -31,16 +31,35 @@ export const HomePage: React.FC = () => {
       <HeroSection />
 
       {/* Knowledge Graph CTA Section */}
-      <section className="w-full bg-gradient-to-b from-black via-[#0a0a0a] to-black py-16">
-        <div className="max-w-6xl mx-auto px-6">
+      <section className="relative w-full bg-gradient-to-b from-black via-gray-950 to-black py-20 overflow-hidden">
+        {/* Background Effects */}
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-600/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.15, 0.25, 0.15],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+
+        <div className="relative z-10 max-w-6xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-gradient-to-br from-purple-900/20 to-cyan-900/20 border border-slate-800 rounded-2xl p-8 md:p-12 text-center"
+            className="bg-gradient-to-br from-purple-900/30 to-cyan-900/30 border border-purple-500/30 rounded-2xl p-8 md:p-12 text-center backdrop-blur-sm shadow-2xl"
           >
-            <div className="mb-6">
-              <div className="inline-block p-4 bg-gradient-to-br from-purple-600 to-cyan-600 rounded-2xl mb-4">
+            <motion.div
+              className="mb-6"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="inline-block p-4 bg-gradient-to-br from-purple-600 to-cyan-600 rounded-2xl mb-4 shadow-lg shadow-purple-500/50">
                 <svg
                   className="w-12 h-12 text-white"
                   fill="none"
@@ -55,9 +74,9 @@ export const HomePage: React.FC = () => {
                   />
                 </svg>
               </div>
-            </div>
+            </motion.div>
 
-            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent mb-4">
               Explore the Knowledge Graph
             </h2>
 
@@ -71,59 +90,78 @@ export const HomePage: React.FC = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/explore"
-                className="px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity shadow-lg hover:shadow-xl flex items-center gap-2"
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                <Link
+                  href="/explore"
+                  className="px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-semibold rounded-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 flex items-center gap-2"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
-                Launch Knowledge Graph
-              </Link>
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
+                  Launch Knowledge Graph
+                </Link>
+              </motion.div>
 
-              <Link
-                href="/search"
-                className="px-8 py-4 bg-slate-800/40 border border-slate-700 text-slate-200 font-semibold rounded-lg hover:bg-slate-800/60 transition-colors"
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Query Knowledge Graph
-              </Link>
+                <Link
+                  href="/search"
+                  className="px-8 py-4 bg-slate-800/40 border border-cyan-500/30 text-slate-200 font-semibold rounded-lg hover:bg-slate-800/60 hover:border-cyan-500/60 transition-all duration-300"
+                >
+                  Query Knowledge Graph
+                </Link>
+              </motion.div>
             </div>
 
             <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
-              <div className="p-4 bg-slate-900/40 border border-slate-800 rounded-lg">
-                <div className="text-2xl font-bold text-purple-400 mb-1">
+              <motion.div
+                whileHover={{ y: -5, scale: 1.02 }}
+                className="p-4 bg-gradient-to-br from-purple-900/30 to-slate-900/40 border border-purple-500/30 rounded-lg group hover:border-purple-500/60 transition-all duration-300"
+              >
+                <div className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-1">
                   74,250+
                 </div>
-                <div className="text-xs text-slate-400">
+                <div className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors">
                   Verified Relationships
                 </div>
-              </div>
-              <div className="p-4 bg-slate-900/40 border border-slate-800 rounded-lg">
-                <div className="text-2xl font-bold text-cyan-400 mb-1">
+              </motion.div>
+              <motion.div
+                whileHover={{ y: -5, scale: 1.02 }}
+                className="p-4 bg-gradient-to-br from-cyan-900/30 to-slate-900/40 border border-cyan-500/30 rounded-lg group hover:border-cyan-500/60 transition-all duration-300"
+              >
+                <div className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-1">
                   Interactive
                 </div>
-                <div className="text-xs text-slate-400">
+                <div className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors">
                   Drag, Zoom, Explore
                 </div>
-              </div>
-              <div className="p-4 bg-slate-900/40 border border-slate-800 rounded-lg">
-                <div className="text-2xl font-bold text-blue-400 mb-1">
+              </motion.div>
+              <motion.div
+                whileHover={{ y: -5, scale: 1.02 }}
+                className="p-4 bg-gradient-to-br from-blue-900/30 to-slate-900/40 border border-blue-500/30 rounded-lg group hover:border-blue-500/60 transition-all duration-300"
+              >
+                <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-1">
                   Real-time
                 </div>
-                <div className="text-xs text-slate-400">
+                <div className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors">
                   Dynamic Force Layout
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
